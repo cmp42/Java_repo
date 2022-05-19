@@ -13,17 +13,9 @@ import java.util.List;
 public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 
 	// Data Abstraction은 예시일 뿐 자유롭게 B+ Tree의 범주 안에서 어느정도 수정가능
+	public static final int T = 3;
 	private ThreeWayBPlusTreeNode root = new ThreeWayBPlusTreeNode();
 	private LinkedList<ThreeWayBPlusTreeNode> leafList = new LinkedList<ThreeWayBPlusTreeNode>();
-
-	public void treeInit(){
-		root.keyList = new ArrayList<Integer>();
-		root.mNum = 0;
-		root.children = new ArrayList<ThreeWayBPlusTreeNode>();
-		root.parent = new ThreeWayBPlusTreeNode();
-		root.leftNode = new ThreeWayBPlusTreeNode();
-		root.rightNode = new ThreeWayBPlusTreeNode();
-	}
 	/**
 	 * 과제 Assignment4를 위한 메소드:
 	 * 
@@ -132,7 +124,20 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public boolean add(Integer e) {
 		// TODO Auto-generated method stub
-		
+		ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode();
+		if (root.keyList.get(0) )
+		if ( < T){
+			ThreeWayBPlusTreeNode s = new ThreeWayBPlusTreeNode();
+			root = s;
+			s.mIsLeafNode = false;
+			s.next = null;
+			s.mNum++;
+
+		}
+		else {
+			Integer i = root.keyList.get(0);
+			
+		}
 		return false;
 	}
 
