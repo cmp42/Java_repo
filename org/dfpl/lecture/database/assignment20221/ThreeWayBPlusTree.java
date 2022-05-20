@@ -94,12 +94,16 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public int size() {
 		// TODO Auto-generated method stub
+
 		return 0;
 	}
 
 	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
+		if (root.keyList.size() == 0) {
+			return true;
+		}
 		return false;
 	}
 
@@ -125,17 +129,12 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	public boolean add(Integer e) {
 		// TODO Auto-generated method stub
 		ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode();
-		if (root.keyList.get(0) )
-		if ( < T){
-			ThreeWayBPlusTreeNode s = new ThreeWayBPlusTreeNode();
-			root = s;
-			s.mIsLeafNode = false;
-			s.next = null;
-			s.mNum++;
-
+		if (root.isEmpty() || root.mNum < T) {
+			root.keyList.add(e);
+			root.mNum++;
 		}
 		else {
-			Integer i = root.keyList.get(0);
+			
 			
 		}
 		return false;
