@@ -2,6 +2,8 @@ package org.dfpl.lecture.database.assignment20221;
 
 import java.util.*;
 
+import org.dfpl.lecture.database.assignment20221.ThreeWayBPlusTreeNode.DictPair;
+
 @SuppressWarnings("unused")
 public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 
@@ -94,7 +96,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return false;
+		return leafList == null;
 	}
 
 	@Override
@@ -118,6 +120,12 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public boolean add(Integer e) {
 		// TODO Auto-generated method stub
+		if (isEmpty()) {
+			ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode(new Integer[T]);
+			this.leafList = newNode;
+			System.out.println("it's working insert value is " + leafList.keys[0]);
+		} else {
+		}
 		return false;
 	}
 
