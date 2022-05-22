@@ -1,21 +1,14 @@
 package org.dfpl.lecture.database.assignment20221;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.NavigableSet;
-import java.util.SortedSet;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unused")
 public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 
 	// Data Abstraction은 예시일 뿐 자유롭게 B+ Tree의 범주 안에서 어느정도 수정가능
 	public static final int T = 3;
-	private ThreeWayBPlusTreeNode root = new ThreeWayBPlusTreeNode();
-	private LinkedList<ThreeWayBPlusTreeNode> leafList = new LinkedList<ThreeWayBPlusTreeNode>();
+	private ThreeWayBPlusTreeNode root;
+	private ThreeWayBPlusTreeNode leafList;
 	/**
 	 * 과제 Assignment4를 위한 메소드:
 	 * 
@@ -101,9 +94,6 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		if (root.keyList.size() == 0) {
-			return true;
-		}
 		return false;
 	}
 
@@ -128,15 +118,6 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public boolean add(Integer e) {
 		// TODO Auto-generated method stub
-		ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode();
-		if (root.isEmpty() || root.mNum < T) {
-			root.keyList.add(e);
-			root.mNum++;
-		}
-		else {
-			
-			
-		}
 		return false;
 	}
 
