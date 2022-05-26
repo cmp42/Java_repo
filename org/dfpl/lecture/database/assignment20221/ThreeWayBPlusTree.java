@@ -2,8 +2,6 @@ package org.dfpl.lecture.database.assignment20221;
 
 import java.util.*;
 
-import org.dfpl.lecture.database.assignment20221.ThreeWayBPlusTreeNode.DictPair;
-
 @SuppressWarnings("unused")
 public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 
@@ -64,6 +62,20 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	 * 위와 같이 출력되어야 함. 
 	 * Note: Bottom의 LinkedList 순회를 하면 안됨
 	 */
+
+	public ThreeWayBPlusTreeNode findNode(Integer key) {
+		ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode(new Integer[T]);
+		newNode = this.root.children[0];
+		while (newNode != null) {
+			for (int i = 0; i < 2; i++) {
+				if (newNode.keys[i] == key) {
+					return newNode;
+				}
+			}
+			newNode = newNode.rightSibling;
+		}
+		return newNode;
+	}
 	public void inorderTraverse() {
 		// TODO Auto-generated method stub
 	}
@@ -96,7 +108,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return leafList == null;
+		return leafList == null || root == null;
 	}
 
 	@Override
@@ -122,9 +134,16 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 		// TODO Auto-generated method stub
 		if (isEmpty()) {
 			ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode(new Integer[T]);
-			this.leafList = newNode;
+			this.root = newNode;
 			System.out.println("it's working insert value is " + leafList.keys[0]);
 		} else {
+			ThreeWayBPlusTreeNode newNode;
+
+			if (this.root == null) {
+				newNode = this.leafList;
+			} else {
+				newNode = findNode(e);
+			}
 		}
 		return false;
 	}

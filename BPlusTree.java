@@ -561,13 +561,11 @@ public class BPlusTree {
   public static void main(String[] args) {
     BPlusTree bpt = null;
     bpt = new BPlusTree(3);
-    bpt.insert(5, 33);
-    bpt.insert(15, 21);
-    bpt.insert(25, 31);
-    bpt.insert(35, 41);
-    bpt.insert(45, 10);
 
-    if (bpt.search(15) != null) {
+    for (int i = 0; i < 9; i++) {
+      bpt.insert(10 * i, i);
+    }
+    if (bpt.search(20) != null) {
       System.out.println("Found");
     } else {
       System.out.println("Not Found");
