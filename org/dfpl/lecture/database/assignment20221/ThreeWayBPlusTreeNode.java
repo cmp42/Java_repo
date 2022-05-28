@@ -9,6 +9,7 @@ public class ThreeWayBPlusTreeNode {
 	public static final int T = 3;
 	public ThreeWayBPlusTreeNode parent;
 	public Integer[] keys;
+	public int m;
 	public ThreeWayBPlusTreeNode[] children;
 	public ThreeWayBPlusTreeNode leftNode;
 	public ThreeWayBPlusTreeNode rightNode;
@@ -95,6 +96,7 @@ public class ThreeWayBPlusTreeNode {
 		this.maxDegree = T;
 		this.minDegree = (int) Math.ceil(T / 2.0);
 		this.degree = 0;
+		this.m = 0;
 		this.keys = keys;
 		this.children = new ThreeWayBPlusTreeNode[this.maxDegree + 1];
 	}
@@ -102,6 +104,7 @@ public class ThreeWayBPlusTreeNode {
 	private ThreeWayBPlusTreeNode(Integer[] keys, ThreeWayBPlusTreeNode[] ps) {
 		this.maxDegree = T;
 		this.minDegree = (int) Math.ceil(T / 2.0);
+		this.m = 0;
 		this.degree = nullSearch(ps);
 		this.keys = keys;
 		this.children = ps;

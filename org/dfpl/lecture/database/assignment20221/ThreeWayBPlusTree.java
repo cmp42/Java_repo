@@ -108,7 +108,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public boolean isEmpty() {
 		// TODO Auto-generated method stub
-		return leafList == null || root == null;
+		return root == null;
 	}
 
 	@Override
@@ -132,17 +132,41 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public boolean add(Integer e) {
 		// TODO Auto-generated method stub
+		ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode(new Integer[T]);
 		if (isEmpty()) {
-			ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode(new Integer[T]);
-			this.root = newNode;
-			System.out.println("it's working insert value is " + leafList.keys[0]);
+			root = newNode;
+			root.keys[root.m] = e;
+			root.m++;
+			System.out.println(newNode.keys[0]);
 		} else {
-			ThreeWayBPlusTreeNode newNode;
+			if (root.m < T) {
+				newNode.m = root.m;
+				for (int i = 0; i < newNode.m; i++) {
+					newNode.keys[i] = root.keys[i];
+					System.out.println(newNode.keys[i]);
+					System.out.println("---------");
+				}
+				newNode.keys[newNode.m] = e;
+				newNode.m++;
+				root = newNode;
+				if (root.m == T) {
+					ThreeWayBPlusTreeNode newRoot = new ThreeWayBPlusTreeNode(new Integer[T]);
+					ThreeWayBPlusTreeNode newNodeleft = new ThreeWayBPlusTreeNode(new Integer[T]);
+					ThreeWayBPlusTreeNode newNoderight = new ThreeWayBPlusTreeNode(new Integer[T]);
+					newRoot.keys[0] = root.keys[1];
+					newRoot.m++;
+					newNodeleft.keys[0] = root.keys[0];
+					newNodeleft.m++;
+					newNoderight.keys[0] = root.keys[2];
+					newNoderight.m++;
 
-			if (this.root == null) {
-				newNode = this.leafList;
+					root = newRoot;
+					root.leftNode = newNodeleft;
+					root.rightNode = newNoderight;
+					System.out.println(root.keys[0]);
+				}
 			} else {
-				newNode = findNode(e);
+				System.out.println("??");
 			}
 		}
 		return false;
