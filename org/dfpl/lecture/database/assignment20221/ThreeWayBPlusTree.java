@@ -8,7 +8,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	// Data Abstraction은 예시일 뿐 자유롭게 B+ Tree의 범주 안에서 어느정도 수정가능
 	public static final int T = 3;
 	private ThreeWayBPlusTreeNode root;
-	private ThreeWayBPlusTreeNode leafList;
+	private LinkedList<ThreeWayBPlusTree> leafList;
 	/**
 	 * 과제 Assignment4를 위한 메소드:
 	 * 
@@ -63,19 +63,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	 * Note: Bottom의 LinkedList 순회를 하면 안됨
 	 */
 
-	public ThreeWayBPlusTreeNode findNode(Integer key) {
-		ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode(new Integer[T]);
-		newNode = this.root.children[0];
-		while (newNode != null) {
-			for (int i = 0; i < 2; i++) {
-				if (newNode.keys[i] == key) {
-					return newNode;
-				}
-			}
-			newNode = newNode.rightSibling;
-		}
-		return newNode;
-	}
+	
 	public void inorderTraverse() {
 		// TODO Auto-generated method stub
 	}
@@ -132,44 +120,13 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public boolean add(Integer e) {
 		// TODO Auto-generated method stub
-		ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode(new Integer[T]);
+		ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode();
 		if (isEmpty()) {
-			root = newNode;
-			root.keys[root.m] = e;
-			root.m++;
-			System.out.println(newNode.keys[0]);
-		} else {
-			if (root.m < T) {
-				newNode.m = root.m;
-				for (int i = 0; i < newNode.m; i++) {
-					newNode.keys[i] = root.keys[i];
-					System.out.println(newNode.keys[i]);
-					System.out.println("---------");
-				}
-				newNode.keys[newNode.m] = e;
-				newNode.m++;
-				root = newNode;
-				if (root.m == T) {
-					ThreeWayBPlusTreeNode newRoot = new ThreeWayBPlusTreeNode(new Integer[T]);
-					ThreeWayBPlusTreeNode newNodeleft = new ThreeWayBPlusTreeNode(new Integer[T]);
-					ThreeWayBPlusTreeNode newNoderight = new ThreeWayBPlusTreeNode(new Integer[T]);
-					newRoot.keys[0] = root.keys[1];
-					newRoot.m++;
-					newNodeleft.keys[0] = root.keys[0];
-					newNodeleft.m++;
-					newNoderight.keys[0] = root.keys[2];
-					newNoderight.m++;
-
-					root = newRoot;
-					root.leftNode = newNodeleft;
-					root.rightNode = newNoderight;
-					System.out.println(root.keys[0]);
-				}
-			} else {
-				System.out.println("??");
-			}
+			newNode.keyList.add(e);
+			newNode.m++;
 		}
-		return false;
+
+		return true;
 	}
 
 	@Override
