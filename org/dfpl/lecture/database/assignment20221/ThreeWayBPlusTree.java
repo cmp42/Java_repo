@@ -122,10 +122,84 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 		// TODO Auto-generated method stub
 		ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode();
 		if (isEmpty()) {
+			root = newNode;
 			newNode.keyList.add(e);
 			newNode.m++;
 		}
-
+		else {
+			int i;
+			ThreeWayBPlusTreeNode cn;
+			cn = root;
+			for (i = 0; i < cn.m; i++) {
+				if (cn.keyList.get(i) > e) {
+					if (cn.left != null){
+						cn = cn.left;
+						i = 0;
+						continue;
+					}
+				}
+			}
+			for (i = 0; i < cn.m; i++) {
+				if (cn.keyList.get(i) <= e) {
+					if (cn.right != null){
+						System.out.println("진행이 되나요");
+						cn = cn.right;
+						i = 0;
+						continue;
+					}
+				}
+			}
+			if (cn.m < T) {
+				cn.keyList.add(e);
+				cn.m++;
+				for (int j = 0; j < cn.m; j++) {
+					System.out.println(cn.keyList.get(j));
+				}
+			}
+			if (cn.m == T) {
+				if (cn.parent == null) {
+					ThreeWayBPlusTreeNode newRoot = new ThreeWayBPlusTreeNode();
+					ThreeWayBPlusTreeNode newLeft = new ThreeWayBPlusTreeNode();
+					ThreeWayBPlusTreeNode newRight;
+					newRoot.keyList.add(cn.keyList.get(1));
+					newRoot.m++;
+					newLeft.keyList.add(cn.keyList.get(0));
+					newLeft.m++;
+					if (cn.left != null) {
+						newLeft.left = cn.left;
+						newLeft.right = cn.left.link;
+					}
+					newRight = cn;
+					if (cn.middle == null) {
+						newRight.left = newLeft;
+					}
+					else {
+						newRight.left = cn.middle;
+					}
+					newRight.m--;
+					newRight.keyList.remove(0);
+					newRoot.left = newLeft;
+					newRoot.right = newRight;
+					newLeft.parent = newRoot;
+					newLeft.link = newRight;
+					newRight.parent = newRoot;
+					root = newRoot;
+				}
+				else if (cn.parent != null && cn.parent.m < T) {
+					System.out.println("이게 실행이 되어야하는데");
+					ThreeWayBPlusTreeNode newMiddle = new ThreeWayBPlusTreeNode();
+					newMiddle.keyList.add(cn.keyList.get(0));
+					cn.keyList.remove(0);
+					cn.parent.keyList.add(cn.keyList.get(0));
+					cn.parent.middle = newMiddle;
+					cn.parent.left.link = cn.parent.middle;
+					cn.parent.link = cn;
+					cn.parent.m++;
+					cn.m--;
+				}
+			}
+		}
+		System.out.println("");
 		return true;
 	}
 

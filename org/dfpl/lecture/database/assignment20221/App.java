@@ -19,7 +19,7 @@ public class App {
 		bpTree.getNode(9);
 		System.out.println();
 		bpTree.inorderTraverse();
-
+		/*
 		System.out.println("Assignment 5: ");
 		
 		ArrayList<Integer> list = new ArrayList<Integer>();
@@ -63,6 +63,6 @@ public class App {
 				break;
 			}
 		}
-		System.out.println("remove test: " + isPass);
+		System.out.println("remove test: " + isPass);*/
 	}
 }
