@@ -8,7 +8,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	// Data Abstraction은 예시일 뿐 자유롭게 B+ Tree의 범주 안에서 어느정도 수정가능
 	public static final int T = 3;
 	private ThreeWayBPlusTreeNode root;
-	private LinkedList<ThreeWayBPlusTree> leafList;
+	private LinkedList<ThreeWayBPlusTreeNode> leafList = new LinkedList<ThreeWayBPlusTreeNode>();
 	/**
 	 * 과제 Assignment4를 위한 메소드:
 	 * 
@@ -32,8 +32,26 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	 */
 	public ThreeWayBPlusTreeNode getNode(Integer key) {
 		// TODO Auto-generated method stub
-		
-		return null;
+		int i;
+		ThreeWayBPlusTreeNode cn;
+		cn = root;
+		for (i = 0; i < cn.m; i++) {
+			if (cn.keyList.get(i) > key) {
+				if (cn.left != null){
+					cn = cn.left;
+					i = 0;
+					continue;
+				}
+			}
+			else {
+				if (cn.right != null){
+					cn = cn.right;
+					i = 0;
+					continue;
+				}
+			}
+		}
+		return cn;
 	}
 	
 	/**
@@ -129,26 +147,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 		else {
 			int i;
 			ThreeWayBPlusTreeNode cn;
-			cn = root;
-			for (i = 0; i < cn.m; i++) {
-				if (cn.keyList.get(i) > e) {
-					if (cn.left != null){
-						cn = cn.left;
-						i = 0;
-						continue;
-					}
-				}
-			}
-			for (i = 0; i < cn.m; i++) {
-				if (cn.keyList.get(i) <= e) {
-					if (cn.right != null){
-						System.out.println("진행이 되나요");
-						cn = cn.right;
-						i = 0;
-						continue;
-					}
-				}
-			}
+			cn = getNode(e);
 			if (cn.m < T) {
 				cn.keyList.add(e);
 				cn.m++;
@@ -165,24 +164,14 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 					newRoot.m++;
 					newLeft.keyList.add(cn.keyList.get(0));
 					newLeft.m++;
-					if (cn.left != null) {
-						newLeft.left = cn.left;
-						newLeft.right = cn.left.link;
-					}
 					newRight = cn;
-					if (cn.middle == null) {
-						newRight.left = newLeft;
-					}
-					else {
-						newRight.left = cn.middle;
-					}
 					newRight.m--;
 					newRight.keyList.remove(0);
 					newRoot.left = newLeft;
 					newRoot.right = newRight;
 					newLeft.parent = newRoot;
-					newLeft.link = newRight;
 					newRight.parent = newRoot;
+					leafList.add(newLeft);
 					root = newRoot;
 				}
 				else if (cn.parent != null && cn.parent.m < T) {
@@ -192,8 +181,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 					cn.keyList.remove(0);
 					cn.parent.keyList.add(cn.keyList.get(0));
 					cn.parent.middle = newMiddle;
-					cn.parent.left.link = cn.parent.middle;
-					cn.parent.link = cn;
+					leafList.add(cn.parent.middle);
 					cn.parent.m++;
 					cn.m--;
 				}

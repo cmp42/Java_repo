@@ -11,7 +11,6 @@ public class ThreeWayBPlusTreeNode {
 	public ThreeWayBPlusTreeNode left;
 	public ThreeWayBPlusTreeNode middle;
 	public ThreeWayBPlusTreeNode right;
-	public ThreeWayBPlusTreeNode link;
 	public int m;
 
 	public ThreeWayBPlusTreeNode() {
