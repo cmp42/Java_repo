@@ -7,8 +7,8 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 
 	// Data Abstraction은 예시일 뿐 자유롭게 B+ Tree의 범주 안에서 어느정도 수정가능
 	public static final int T = 3;
-	private ThreeWayBPlusTreeNode root;
-	private LinkedList<ThreeWayBPlusTreeNode> leafList = new LinkedList<ThreeWayBPlusTreeNode>();
+	public ThreeWayBPlusTreeNode root;
+	public LinkedList<ThreeWayBPlusTreeNode> leafList = new LinkedList<ThreeWayBPlusTreeNode>();
 	/**
 	 * 과제 Assignment4를 위한 메소드:
 	 * 
@@ -32,26 +32,37 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	 */
 	public ThreeWayBPlusTreeNode getNode(Integer key) {
 		// TODO Auto-generated method stub
+		System.out.println("start finding " + key);
 		int i;
 		ThreeWayBPlusTreeNode cn;
+		if (isEmpty()) {
+			System.out.println("Tree is empty");
+			return null;
+		}
 		cn = root;
-		for (i = 0; i < cn.m; i++) {
-			if (cn.keyList.get(i) > key) {
-				if (cn.left != null){
-					cn = cn.left;
-					i = 0;
-					continue;
+		while (!(cn.isLeaf)) {
+			i = 0;
+			for (;i < cn.m; i++) {
+				if (key < cn.keys[i]) {
+					System.out.println("less than " + cn.keys[0]);
+					cn = cn.children[i];
+					break;
 				}
-			}
-			else {
-				if (cn.right != null){
-					cn = cn.right;
-					i = 0;
-					continue;
+				if (i == cn.m - 1) {
+					System.out.println("larger than or equal to " + cn.keys[0]);
+					cn = cn.children[i + 1];
+					break;
 				}
 			}
 		}
-		return cn;
+		for (int j = 0; j < cn.m; j++) {
+			if (cn.keys[j] == key) {
+				System.out.println(key + " found");
+				return cn;
+			}
+		}
+		System.out.println(key + " not found");
+		return null;
 	}
 	
 	/**
@@ -138,52 +149,103 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public boolean add(Integer e) {
 		// TODO Auto-generated method stub
-		ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode();
 		if (isEmpty()) {
+			ThreeWayBPlusTreeNode newNode = new ThreeWayBPlusTreeNode();
 			root = newNode;
-			newNode.keyList.add(e);
+			newNode.keys[0] = e;
+			newNode.isLeaf = true;
 			newNode.m++;
 		}
 		else {
 			int i;
-			ThreeWayBPlusTreeNode cn;
-			cn = getNode(e);
-			if (cn.m < T) {
-				cn.keyList.add(e);
-				cn.m++;
-				for (int j = 0; j < cn.m; j++) {
-					System.out.println(cn.keyList.get(j));
+			ThreeWayBPlusTreeNode cn = root;
+			ThreeWayBPlusTreeNode parent = null;
+			while (!cn.isLeaf) {
+				parent = cn;
+				i = 0;
+				for (;i < cn.m; i++) {
+					if (e < cn.keys[i]) {
+						cn = cn.children[i];
+						break;
+					}
+					if (i == cn.m - 1) {
+						cn = cn.children[i + 1];
+						break;
+					}
 				}
 			}
-			if (cn.m == T) {
-				if (cn.parent == null) {
+
+			if (cn.m < T) {
+				i = 0;
+				while (i < cn.m && e > cn.keys[i]) {
+					i++;
+				}
+
+				for (int k = cn.m; k > i; k--) {
+					cn.keys[k] = cn.keys[k - 1];
+				}
+
+				cn.keys[i] = e;
+				cn.m++;
+
+				cn.children[cn.m] = cn.children[cn.m - 1];
+				cn.children[cn.m - 1] = null;
+
+				for (int j = 0; j < cn.m; j++) {
+					System.out.println(cn.keys[j]);
+				}
+			}
+			if (cn.m >= T) {
+				ThreeWayBPlusTreeNode newLeaf = new ThreeWayBPlusTreeNode();
+				Integer[] cpNode = new Integer[T + 2];
+
+				for (int j = 0; j < T; j++) {
+					cpNode[j] = cn.keys[j];
+				}
+
+				i = 0;
+				int j = 0;
+				while (i < T && e > cpNode[i]) {
+					i++;
+				}
+
+				for (j = T + 1; j > i; j--) {
+					cpNode[j] = cpNode[j - 1];
+				}
+
+				cpNode[i] = e;
+				newLeaf.isLeaf = true;
+
+				cn.m = (T + 1) / 2;
+				newLeaf.m = T + 1 - ((T + 1) / 2);
+
+				cn.children[cn.m] = newLeaf;
+
+				newLeaf.children[newLeaf.m] = cn.children[T];
+
+				cn.children[T] = null;
+
+				for (i = 0; i < cn.m; i++) {
+					cn.keys[i] = cpNode[i];
+				}
+
+				for (i = 0, j = cn.m; i < newLeaf.m; i++, j++) {
+					newLeaf.keys[i] = cpNode[j];
+				}
+				for (int t = 0; t < cn.m; t++) {
+					System.out.println(" ---- >>" + cn.keys[t]);
+				}
+				if (cn == root) {
 					ThreeWayBPlusTreeNode newRoot = new ThreeWayBPlusTreeNode();
-					ThreeWayBPlusTreeNode newLeft = new ThreeWayBPlusTreeNode();
-					ThreeWayBPlusTreeNode newRight;
-					newRoot.keyList.add(cn.keyList.get(1));
-					newRoot.m++;
-					newLeft.keyList.add(cn.keyList.get(0));
-					newLeft.m++;
-					newRight = cn;
-					newRight.m--;
-					newRight.keyList.remove(0);
-					newRoot.left = newLeft;
-					newRoot.right = newRight;
-					newLeft.parent = newRoot;
-					newRight.parent = newRoot;
-					leafList.add(newLeft);
+					newRoot.keys[0] = newLeaf.keys[0];
+					newRoot.children[0] = cn;
+					newRoot.children[1] = newLeaf;
+					newRoot.isLeaf = false;
+					newRoot.m = 1;
 					root = newRoot;
 				}
-				else if (cn.parent != null && cn.parent.m < T) {
-					System.out.println("이게 실행이 되어야하는데");
-					ThreeWayBPlusTreeNode newMiddle = new ThreeWayBPlusTreeNode();
-					newMiddle.keyList.add(cn.keyList.get(0));
-					cn.keyList.remove(0);
-					cn.parent.keyList.add(cn.keyList.get(0));
-					cn.parent.middle = newMiddle;
-					leafList.add(cn.parent.middle);
-					cn.parent.m++;
-					cn.m--;
+				else {
+					addInternal(newLeaf.keys[0], parent, newLeaf);
 				}
 			}
 		}
@@ -191,6 +253,107 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 		return true;
 	}
 
+	public boolean addInternal(Integer x, ThreeWayBPlusTreeNode cn, ThreeWayBPlusTreeNode child) {
+		// TODO Auto-generated method stub
+		if (cn.m < T) {
+			int i = 0;
+			while (i < cn.m && x > cn.keys[i]) {
+				i++;
+			}
+			for (int j = cn.m; j > i; j--) {
+				cn.keys[j] = cn.keys[j - 1];
+			}
+			
+			cn.keys[i] = x;
+			cn.m++;
+			cn.children[i + 1] = child;
+		}
+
+		else {
+			ThreeWayBPlusTreeNode newInternalNode = new ThreeWayBPlusTreeNode();
+			Integer[] cpKeys;
+			ThreeWayBPlusTreeNode[] cpNodes;
+
+			cpKeys = new Integer[T + 2];
+			cpNodes = new ThreeWayBPlusTreeNode[T + 3];
+
+			for (int i = 0; i < T; i++) {
+				cpKeys[i] = cn.keys[i];
+			}
+
+			for (int i = 0; i < T + 1; i++) {
+				cpNodes[i] = cn.children[i];
+			}
+
+			int i = 0, j = 0;
+
+			while (i < T && x > cpKeys[i]) {
+				i++;
+			}
+
+			for (j = T + 1; j > i; j--) {
+				cpKeys[j] = cpKeys[j - 1];
+			}
+
+			cpKeys[i] = x;
+
+			for (j = T + 2; j > i + 1; j--) {
+				cpNodes[j] = cpNodes[j - 1];
+			}
+			cpNodes[i + 1] = child;
+			newInternalNode.isLeaf = false;
+
+			cn.m = (T + 1) / 2;
+			newInternalNode.m = T - ((T + 1) / 2);
+
+			for (i = 0, j = cn.m + 1; i < newInternalNode.m; i++, j++) {
+				newInternalNode.keys[i] = cpKeys[j];
+			}
+
+			for (i = 0, j = cn.m + 1; i < newInternalNode.m + 1; i++, j++) {
+				newInternalNode.children[i] = cpNodes[j];
+			}
+
+			if (cn == root) {
+				ThreeWayBPlusTreeNode newRoot = new ThreeWayBPlusTreeNode();
+
+				newRoot.keys[0] = cn.keys[cn.m];
+				
+				newRoot.children[0] = cn;
+				newRoot.children[1] = newInternalNode;
+				newRoot.isLeaf = false;
+				newRoot.m = 1;
+				root = newRoot;
+			}
+			else {
+				addInternal(cn.keys[cn.m], findParent(root, cn), newInternalNode);
+			}
+		}
+		return false;
+	}
+
+	public ThreeWayBPlusTreeNode findParent(ThreeWayBPlusTreeNode cn, ThreeWayBPlusTreeNode child) {
+		// TODO Auto-generated method stub
+		ThreeWayBPlusTreeNode realParent;
+
+		if (cn.isLeaf || (cn.children[0].isLeaf)) {
+			return null;
+		}
+
+		for (int i = 0; i < cn.m + 1; i++) {
+			if (cn.children[i] == child) {
+				realParent = cn;
+				return realParent;
+			}
+			else {
+				realParent = findParent(cn.children[i], child);
+				if (realParent != null) {
+					return realParent;
+				}
+			}
+		}
+		return null;
+	}
 	@Override
 	public boolean remove(Object o) {
 		// TODO Auto-generated method stub

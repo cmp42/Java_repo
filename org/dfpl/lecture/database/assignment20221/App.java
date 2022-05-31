@@ -14,9 +14,9 @@ public class App {
 		for (int i = 1; i < 18; i++) {
 			bpTree.add(i);
 		}
-		bpTree.getNode(15);
+		bpTree.getNode(5);
 		System.out.println();
-		bpTree.getNode(9);
+		bpTree.getNode(1);
 		System.out.println();
 		bpTree.inorderTraverse();
 		/*

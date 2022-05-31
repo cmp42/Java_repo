@@ -5,20 +5,19 @@ import java.util.*;
 @SuppressWarnings("unused")
 public class ThreeWayBPlusTreeNode {
 
+	public static final int T = 3;
 	// Data Abstraction은 예시일 뿐 자유롭게 B+ Tree의 범주 안에서 어느정도 수정가능
 	public ThreeWayBPlusTreeNode parent;
-	public List<Integer> keyList;
-	public ThreeWayBPlusTreeNode left;
-	public ThreeWayBPlusTreeNode middle;
-	public ThreeWayBPlusTreeNode right;
+	public ThreeWayBPlusTreeNode[] children;
+	public Integer[] keys;
+	public boolean isLeaf;
 	public int m;
 
 	public ThreeWayBPlusTreeNode() {
 		this.parent = null;
-		this.keyList = new ArrayList<Integer>();
-		this.left = null;
-		this.middle = null;
-		this.right = null;
+		this.children = new ThreeWayBPlusTreeNode[T + 2];
+		this.keys = new Integer[T + 1];
 		this.m = 0;
+		this.isLeaf = false;
 	}
 }
