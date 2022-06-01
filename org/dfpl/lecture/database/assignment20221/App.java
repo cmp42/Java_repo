@@ -14,10 +14,10 @@ public class App {
 		for (int i = 1; i < 18; i++) {
 			bpTree.add(i);
 		}
-		bpTree.getNode(5);
-		System.out.println();
-		bpTree.getNode(1);
-		System.out.println();
+		for (int i = 1; i < 18; i++) {
+			bpTree.getNode(i);
+			System.out.println();
+		}
 		bpTree.inorderTraverse();
 		/*
 		System.out.println("Assignment 5: ");

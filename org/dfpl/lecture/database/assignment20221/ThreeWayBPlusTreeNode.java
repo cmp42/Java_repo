@@ -15,8 +15,8 @@ public class ThreeWayBPlusTreeNode {
 
 	public ThreeWayBPlusTreeNode() {
 		this.parent = null;
-		this.children = new ThreeWayBPlusTreeNode[T + 2];
-		this.keys = new Integer[T + 1];
+		this.children = new ThreeWayBPlusTreeNode[T + 1];
+		this.keys = new Integer[T];
 		this.m = 0;
 		this.isLeaf = false;
 	}
