@@ -96,19 +96,19 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	public void inorderTraverse() {
 		// TODO Auto-generated method stub
 		ThreeWayBPlusTreeNode node = root;
-		recursiveOrder(node);
+		recursiveInorder(node);
 	}
 
-	public void recursiveOrder(ThreeWayBPlusTreeNode node) {
+	public void recursiveInorder(ThreeWayBPlusTreeNode node) {
 		if (node != null) {
 			if (node.children[0] != null) {
-				recursiveOrder(node.children[0]);
+				recursiveInorder(node.children[0]);
 			}
 			for (int i = 0; i < node.m; i++) {
 				System.out.println(node.keys[i]);
 			}
 			if (node.children[node.m - 1] != null) {
-				recursiveOrder(node.children[1]);
+				recursiveInorder(node.children[1]);
 			}
 		}
 	}
@@ -202,7 +202,10 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 
 				cn.keys[i] = e;
 				cn.m++;
-
+				for (int s = 0; s < cn.m; s++) {
+					System.out.println("이건 이렇게 될거야" + cn.keys[s]);
+				}
+				System.out.println("");
 				cn.children[cn.m] = cn.children[cn.m - 1];
 				cn.children[cn.m - 1] = null;
 			}
@@ -214,17 +217,18 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 				for (j = 0; j < T; j++) {
 					cpNode[j] = cn.keys[j];
 				}
-
+				/*
 				i = 0;
 				j = 0;
 				while (i < T && e > cpNode[i]) {
 					i++;
 				}
-
+				
 				for (j = T + 1; j > i; j--) {
 					cpNode[j] = cpNode[j - 1];
 				}
-
+				cpNode[i] = e;
+				*/
 				newLeaf.isLeaf = true;
 
 				cn.m = 1;
@@ -275,11 +279,15 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 				cn.keys[j] = cn.keys[j - 1];
 			}
 			
+			for (int k = cn.m + 1; k > i + 1; k--) {
+				cn.children[k] = cn.children[k - 1];
+			}
+			
 			cn.keys[i] = x;
 			cn.m++;
 			cn.children[i + 1] = child;
 		}
-
+	
 		if (cn.m >= T) {
 			ThreeWayBPlusTreeNode newInternalNode = new ThreeWayBPlusTreeNode();
 			Integer[] cpKeys;
@@ -306,7 +314,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 				cpKeys[j] = cpKeys[j - 1];
 			}
 			cpKeys[i] = x;
-
+			
 			for (j = T + 2; j > i + 1; j--) {
 				cpNodes[j] = cpNodes[j - 1];
 			}
@@ -315,15 +323,24 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 
 			cn.m = 1;
 			newInternalNode.m = T - ((T + 1) / 2);
-
-			for (i = 0, j = cn.m + 1; i < newInternalNode.m; i++, j++) {
-				newInternalNode.keys[i] = cpKeys[j];
+			if (i < 1) {
+				for (i = 0, j = cn.m + 2; i < newInternalNode.m; i++, j++) {
+					newInternalNode.keys[i] = cpKeys[j];
+				}
+	
+				for (i = 0, j = cn.m + 2; i < newInternalNode.m + 1; i++, j++) {
+					newInternalNode.children[i] = cpNodes[j];
+				}	
 			}
+			else {
+				for (i = 0, j = cn.m + 1; i < newInternalNode.m; i++, j++) {
+					newInternalNode.keys[i] = cpKeys[j];
+				}
 
-			for (i = 0, j = cn.m + 1; i < newInternalNode.m + 1; i++, j++) {
-				newInternalNode.children[i] = cpNodes[j];
+				for (i = 0, j = cn.m + 1; i < newInternalNode.m + 1; i++, j++) {
+					newInternalNode.children[i] = cpNodes[j];
+				}
 			}
-
 			if (cn == root) {
 				ThreeWayBPlusTreeNode newRoot = new ThreeWayBPlusTreeNode();
 
