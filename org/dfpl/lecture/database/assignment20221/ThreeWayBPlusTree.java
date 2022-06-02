@@ -95,8 +95,23 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	
 	public void inorderTraverse() {
 		// TODO Auto-generated method stub
+		ThreeWayBPlusTreeNode node = root;
+		recursiveOrder(node);
 	}
 
+	public void recursiveOrder(ThreeWayBPlusTreeNode node) {
+		if (node != null) {
+			if (node.children[0] != null) {
+				recursiveOrder(node.children[0]);
+			}
+			for (int i = 0; i < node.m; i++) {
+				System.out.println(node.keys[i]);
+			}
+			if (node.children[node.m - 1] != null) {
+				recursiveOrder(node.children[1]);
+			}
+		}
+	}
 	@Override
 	public Comparator<? super Integer> comparator() {
 		// TODO Auto-generated method stub
@@ -163,17 +178,12 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 			while (!cn.isLeaf) {
 				i = 0;
 				for (;i < cn.m; i++) {
-					System.out.println("cn.keys == " + cn.keys[i]);
-					System.out.println("그다음엔 이게 실행되고");
+					parent = cn;
 					if (e < cn.keys[i]) {
-						System.out.println("e가 적어서??");
-						parent = cn;
 						cn = cn.children[i];
 						break;
 					}
 					if (i == cn.m - 1) {
-						System.out.println("i==cn.m이어서???");
-						parent = cn;
 						cn = cn.children[i + 1];
 						break;
 					}
@@ -195,10 +205,6 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 
 				cn.children[cn.m] = cn.children[cn.m - 1];
 				cn.children[cn.m - 1] = null;
-
-				for (int j = 0; j < cn.m; j++) {
-					System.out.println(cn.keys[j]);
-				}
 			}
 			if (cn.m >= T) {
 				ThreeWayBPlusTreeNode newLeaf = new ThreeWayBPlusTreeNode();
@@ -237,11 +243,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 				for (i = 0, j = cn.m; i < newLeaf.m; i++, j++) {
 					newLeaf.keys[i] = cpNode[j];
 				}
-				for (int t = 0; t < newLeaf.m; t++) {
-					System.out.println(" ---- >>" + newLeaf.keys[t]);
-				}
 				if (cn == root) {
-					System.out.println("처음엔 이게 실행될거여");
 					ThreeWayBPlusTreeNode newRoot = new ThreeWayBPlusTreeNode();
 					ThreeWayBPlusTreeNode newChild = new ThreeWayBPlusTreeNode();
 					newRoot.keys[0] = newLeaf.keys[0];
@@ -255,19 +257,16 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 					root = newRoot;
 				}
 				else {
-					System.out.println("얜 그럼 언제 되는데");
 					addInternal(newLeaf.keys[0], parent, newLeaf);
 				}
 			}
 		}
-		System.out.println("");
 		return true;
 	}
 
 	public boolean addInternal(Integer x, ThreeWayBPlusTreeNode cn, ThreeWayBPlusTreeNode child) {
 		// TODO Auto-generated method stub
 		if (cn.m < T) {
-			System.out.println("얜 다음에 얘가 실행되어야하네");
 			int i = 0;
 			while (i < cn.m && x > cn.keys[i]) {
 				i++;
@@ -279,13 +278,9 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 			cn.keys[i] = x;
 			cn.m++;
 			cn.children[i + 1] = child;
-			for(i = 0; i < cn.m; i++) {
-				System.out.println("cn은 root고 그 key" + cn.keys[i]);
-			}
 		}
 
 		if (cn.m >= T) {
-			System.out.println("얘가 바로실행되나??");
 			ThreeWayBPlusTreeNode newInternalNode = new ThreeWayBPlusTreeNode();
 			Integer[] cpKeys;
 			ThreeWayBPlusTreeNode[] cpNodes;
@@ -341,7 +336,6 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 				root = newRoot;
 			}
 			else {
-				System.out.println("이게 실행돼?");
 				addInternal(cn.keys[cn.m], findParent(root, cn), newInternalNode);
 			}
 		}
