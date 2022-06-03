@@ -23,7 +23,7 @@ public class App {
 		for (int i = 0; i < bpTree.leafList.size(); i++) {
 			System.out.println(bpTree.leafList.get(i).keys[0]);
 		}
-
+		/*
 		System.out.println("Assignment 5: ");
 		
 		ArrayList<Integer> list = new ArrayList<Integer>();
@@ -40,21 +40,22 @@ public class App {
 		for (Integer val : list) {
 			yourBTree.add(val);
 		}
-		
+
 		System.out.println("first test: " + treeSet.first().equals(yourBTree.first()));
 		System.out.println("last test: " + treeSet.last().equals(yourBTree.last()));
-		/*
+
 		Iterator<Integer> treeIterator = treeSet.iterator();
 		Iterator<Integer> yourBTreeIterator = yourBTree.iterator();
 		boolean isPass = true;
 		while (treeIterator.hasNext() && yourBTreeIterator.hasNext()) {
+			System.out.println("되긴되나??");
 			if (!treeIterator.next().equals(yourBTreeIterator.next())) {
 				isPass = false;
 				break;
 			}
 		}
 		System.out.println("iterator test: " + isPass);
-
+		/*
 		for (int i = 0; i < list.size() / 2; i++) {
 			treeSet.remove(list.get(i));
 			yourBTree.remove(list.get(i));

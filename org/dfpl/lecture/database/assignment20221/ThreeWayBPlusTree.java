@@ -146,7 +146,6 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 			i = 0;
 			for (;i < cn.m; i++) {
 				if (i == cn.m - 1) {
-					System.out.println("last 찾아보자" + cn.keys[i]);
 					cn = cn.children[i + 1];
 					break;
 				}
@@ -197,6 +196,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 			newNode.keys[0] = e;
 			newNode.isLeaf = true;
 			newNode.m++;
+			leafList.add(newNode);
 		}
 		else {
 			int i;
@@ -272,8 +272,23 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 					newLeaf.keys[i] = cpNode[j];
 				}
 
-				if (cn.isLeaf) {
+				if (cn.isLeaf && e == cn.keys[T - 1]) {
+					for (int k = 0; k < leafList.size(); k++) {
+						System.out.println("1 sort 전 뭔데 이거 -> " + leafList.get(k).keys[0]);
+					}
+					Collections.sort(leafList, new Comparator<ThreeWayBPlusTreeNode>() {
+						@Override
+						public int compare(ThreeWayBPlusTreeNode o1, ThreeWayBPlusTreeNode o2) {
+							return (o1.keys[0] > o2.keys[0]) ? 1 : -1;
+						}
+					});
+					for (int k = 0; k < leafList.size(); k++) {
+						System.out.println("뭔데 이거 -> " + leafList.get(k).keys[0]);
+					}
+					leafList.removeLast();
+					System.out.println("");
 					leafList.add(cn);
+					leafList.add(newLeaf);
 				}
 
 				if (cn == root) {
@@ -353,12 +368,12 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 			cn.m = 1;
 			newInternalNode.m = 1;
 			
-			if (i < 1) {
-				for (i = 0, j = cn.m + 1; i < newInternalNode.m; i++, j++) {
+			if (i == 0) {
+				for (i = 0, j = cn.m + 2; i < newInternalNode.m; i++, j++) {
 					newInternalNode.keys[i] = cpKeys[j];
 				}
 	
-				for (i = 0, j = cn.m + 1; i < newInternalNode.m + 1; i++, j++) {
+				for (i = 0, j = cn.m + 2; i < newInternalNode.m + 1; i++, j++) {
 					newInternalNode.children[i] = cpNodes[j];
 				}	
 			}
@@ -370,9 +385,6 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 				for (i = 0, j = cn.m + 1; i < newInternalNode.m + 1; i++, j++) {
 					newInternalNode.children[i] = cpNodes[j];
 				}
-			}
-			if (cn.isLeaf) {
-				leafList.add(cn);
 			}
 
 			if (cn == root) {
@@ -490,7 +502,14 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public Iterator<Integer> iterator() {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Integer> list = new ArrayList<Integer>();
+		System.out.println(leafList.size());
+		for (int i = 0; i < leafList.size(); i++) {
+			System.out.println(leafList.get(i).keys[0]);
+			list.add(leafList.get(i).keys[0]);
+		}
+		Iterator<Integer> leafs = list.iterator();
+		return leafs;
 	}
 
 	@Override
