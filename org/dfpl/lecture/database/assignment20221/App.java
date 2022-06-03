@@ -11,14 +11,18 @@ public class App {
 	public static void main(String[] args) {
 		System.out.println("Assignment 4: ");
 		ThreeWayBPlusTree bpTree = new ThreeWayBPlusTree();
-		for (int i = 7; i > 0; i--) {
+		for (int i = 1; i < 18; i++) {
 			bpTree.add(i);
 		}
-		for (int i = 7; i > 0; i--) {
+		for (int i = 1; i < 18; i++) {
 			bpTree.getNode(i);
 			System.out.println();
 		}
 		bpTree.inorderTraverse();
+	
+		for (int i = 0; i < bpTree.leafList.size(); i++) {
+			System.out.println(bpTree.leafList.get(i).keys[0]);
+		}
 
 		System.out.println("Assignment 5: ");
 		
@@ -31,15 +35,15 @@ public class App {
 		for (Integer val : list) {
 			treeSet.add(val);
 		}
-
+		
 		NavigableSet<Integer> yourBTree = new ThreeWayBPlusTree();
 		for (Integer val : list) {
-			System.out.println("val = " + val);
 			yourBTree.add(val);
 		}
 		
 		System.out.println("first test: " + treeSet.first().equals(yourBTree.first()));
 		System.out.println("last test: " + treeSet.last().equals(yourBTree.last()));
+		/*
 		Iterator<Integer> treeIterator = treeSet.iterator();
 		Iterator<Integer> yourBTreeIterator = yourBTree.iterator();
 		boolean isPass = true;
@@ -65,5 +69,6 @@ public class App {
 			}
 		}
 		System.out.println("remove test: " + isPass);
+		*/
 	}
 }
