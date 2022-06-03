@@ -289,6 +289,37 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 					System.out.println("");
 					leafList.add(cn);
 					leafList.add(newLeaf);
+					Collections.sort(leafList, new Comparator<ThreeWayBPlusTreeNode>() {
+						@Override
+						public int compare(ThreeWayBPlusTreeNode o1, ThreeWayBPlusTreeNode o2) {
+							return (o1.keys[0] > o2.keys[0]) ? 1 : -1;
+						}
+					});
+				}
+
+				else if (cn.isLeaf && e != cn.keys[T - 1]) {
+					for (int k = 0; k < leafList.size(); k++) {
+						System.out.println("1 sort 전 뭔데 이거 -> " + leafList.get(k).keys[0]);
+					}
+					Collections.sort(leafList, new Comparator<ThreeWayBPlusTreeNode>() {
+						@Override
+						public int compare(ThreeWayBPlusTreeNode o1, ThreeWayBPlusTreeNode o2) {
+							return (o1.keys[0] > o2.keys[0]) ? 1 : -1;
+						}
+					});
+					for (int k = 0; k < leafList.size(); k++) {
+						System.out.println("뭔데 이거 -> " + leafList.get(k).keys[0]);
+					}
+					leafList.removeFirst();
+					System.out.println("");
+					leafList.add(cn);
+					leafList.add(newLeaf);
+					Collections.sort(leafList, new Comparator<ThreeWayBPlusTreeNode>() {
+						@Override
+						public int compare(ThreeWayBPlusTreeNode o1, ThreeWayBPlusTreeNode o2) {
+							return (o1.keys[0] > o2.keys[0]) ? 1 : -1;
+						}
+					});
 				}
 
 				if (cn == root) {
