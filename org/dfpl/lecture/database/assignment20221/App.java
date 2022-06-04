@@ -11,20 +11,15 @@ public class App {
 	public static void main(String[] args) {
 		System.out.println("Assignment 4: ");
 		ThreeWayBPlusTree bpTree = new ThreeWayBPlusTree();
-		for (int i = 17; i > 0; i--) {
+		for (int i = 1; i < 18; i++) {
 			bpTree.add(i);
 		}
-		for (int i = 17; i > 0; i--) {
+		for (int i = 1; i < 18; i++) {
 			bpTree.getNode(i);
 			System.out.println();
 		}
 		bpTree.inorderTraverse();
-	
-		System.out.println("");
-		for (int i = 0; i < bpTree.leafList.size(); i++) {
-			System.out.println(bpTree.leafList.get(i).keys[0]);
-		}
-		
+
 		System.out.println("Assignment 5: ");
 		
 		ArrayList<Integer> list = new ArrayList<Integer>();
@@ -44,19 +39,20 @@ public class App {
 
 		System.out.println("first test: " + treeSet.first().equals(yourBTree.first()));
 		System.out.println("last test: " + treeSet.last().equals(yourBTree.last()));
-
+		
 		Iterator<Integer> treeIterator = treeSet.iterator();
 		Iterator<Integer> yourBTreeIterator = yourBTree.iterator();
 		boolean isPass = true;
+		
 		while (treeIterator.hasNext() && yourBTreeIterator.hasNext()) {
-			System.out.println("되긴되나??");
+			
 			if (!treeIterator.next().equals(yourBTreeIterator.next())) {
 				isPass = false;
 				break;
 			}
 		}
 		System.out.println("iterator test: " + isPass);
-		/*
+		
 		for (int i = 0; i < list.size() / 2; i++) {
 			treeSet.remove(list.get(i));
 			yourBTree.remove(list.get(i));
@@ -71,6 +67,6 @@ public class App {
 			}
 		}
 		System.out.println("remove test: " + isPass);
-		*/
+
 	}
 }

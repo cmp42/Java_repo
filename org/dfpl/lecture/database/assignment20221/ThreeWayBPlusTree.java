@@ -139,19 +139,9 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	@Override
 	public Integer last() {
 		// TODO Auto-generated method stub
-		int i;
-		ThreeWayBPlusTreeNode cn;
-		cn = root;
-		while (!(cn.isLeaf)) {
-			i = 0;
-			for (;i < cn.m; i++) {
-				if (i == cn.m - 1) {
-					cn = cn.children[i + 1];
-					break;
-				}
-			}
-		}
 		int j = 0;
+		ThreeWayBPlusTreeNode cn;
+		cn = leafList.get(leafList.size() - 1);
 		while (j < cn.m) j++;
 		return cn.keys[j - 1];
 	}
@@ -237,7 +227,7 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 				ThreeWayBPlusTreeNode newLeaf = new ThreeWayBPlusTreeNode();
 				Integer[] cpNode = new Integer[T + 2];
 				int j;
-
+				int	check = 0;
 				for (j = 0; j < T; j++) {
 					cpNode[j] = cn.keys[j];
 				}
@@ -272,52 +262,40 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 					newLeaf.keys[i] = cpNode[j];
 				}
 
-				if (cn.isLeaf && e == cn.keys[T - 1]) {
-					for (int k = 0; k < leafList.size(); k++) {
-						System.out.println("1 sort 전 뭔데 이거 -> " + leafList.get(k).keys[0]);
-					}
-					Collections.sort(leafList, new Comparator<ThreeWayBPlusTreeNode>() {
-						@Override
-						public int compare(ThreeWayBPlusTreeNode o1, ThreeWayBPlusTreeNode o2) {
-							return (o1.keys[0] > o2.keys[0]) ? 1 : -1;
+				if (cn.isLeaf) {
+					for (ThreeWayBPlusTreeNode x : leafList) {
+						int checkPoint = 0;
+						for (int y = 0; y < x.m; y++) {
+							if (x.keys[y] == cn.keys[y]) {
+								checkPoint = -1;
+								break;
+							}
 						}
-					});
-					for (int k = 0; k < leafList.size(); k++) {
-						System.out.println("뭔데 이거 -> " + leafList.get(k).keys[0]);
+						if (checkPoint == -1) {
+							break;
+						}
+						check++;
 					}
-					leafList.removeLast();
-					System.out.println("");
+					
+					if (leafList.size() == 1) {
+						leafList.remove();
+					}
+					else if (leafList.size() != 1 && check < leafList.size()) {
+						leafList.remove(check);
+					}
+					else if (check == leafList.size() && cn.keys[0] < leafList.get(0).keys[0]){
+						leafList.removeFirst();
+					}
+					else if (check == leafList.size() && cn.keys[0] > leafList.get(leafList.size() - 1).keys[0]){
+						leafList.removeLast();
+					}
+					
 					leafList.add(cn);
 					leafList.add(newLeaf);
 					Collections.sort(leafList, new Comparator<ThreeWayBPlusTreeNode>() {
 						@Override
 						public int compare(ThreeWayBPlusTreeNode o1, ThreeWayBPlusTreeNode o2) {
-							return (o1.keys[0] > o2.keys[0]) ? 1 : -1;
-						}
-					});
-				}
-
-				else if (cn.isLeaf && e != cn.keys[T - 1]) {
-					for (int k = 0; k < leafList.size(); k++) {
-						System.out.println("1 sort 전 뭔데 이거 -> " + leafList.get(k).keys[0]);
-					}
-					Collections.sort(leafList, new Comparator<ThreeWayBPlusTreeNode>() {
-						@Override
-						public int compare(ThreeWayBPlusTreeNode o1, ThreeWayBPlusTreeNode o2) {
-							return (o1.keys[0] > o2.keys[0]) ? 1 : -1;
-						}
-					});
-					for (int k = 0; k < leafList.size(); k++) {
-						System.out.println("뭔데 이거 -> " + leafList.get(k).keys[0]);
-					}
-					leafList.removeFirst();
-					System.out.println("");
-					leafList.add(cn);
-					leafList.add(newLeaf);
-					Collections.sort(leafList, new Comparator<ThreeWayBPlusTreeNode>() {
-						@Override
-						public int compare(ThreeWayBPlusTreeNode o1, ThreeWayBPlusTreeNode o2) {
-							return (o1.keys[0] > o2.keys[0]) ? 1 : -1;
+							return (o1.keys[o1.m - 1] > o2.keys[o2.m - 1]) ? 1 : -1;
 						}
 					});
 				}
@@ -534,11 +512,23 @@ public class ThreeWayBPlusTree implements NavigableSet<Integer> {
 	public Iterator<Integer> iterator() {
 		// TODO Auto-generated method stub
 		ArrayList<Integer> list = new ArrayList<Integer>();
-		System.out.println(leafList.size());
+		
 		for (int i = 0; i < leafList.size(); i++) {
-			System.out.println(leafList.get(i).keys[0]);
-			list.add(leafList.get(i).keys[0]);
+			for (int j = 0; j < leafList.get(i).m; j++) {
+				if (list.contains(leafList.get(i).keys[j])) {
+					continue;
+				}
+				list.add(leafList.get(i).keys[j]);
+				
+			}
 		}
+		Collections.sort(list, new Comparator<Integer>() {
+			@Override
+			public int compare(Integer o1, Integer o2) {
+				return (o1 > o2) ? 1 : -1;
+			}
+		});
+		
 		Iterator<Integer> leafs = list.iterator();
 		return leafs;
 	}
