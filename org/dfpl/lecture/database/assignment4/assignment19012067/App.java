@@ -1,4 +1,4 @@
-package org.dfpl.lecture.database.assignment19012067;
+package org.dfpl.lecture.database.assignment4.assignment19012067;
 
 import java.util.ArrayList;
 import java.util.Iterator;

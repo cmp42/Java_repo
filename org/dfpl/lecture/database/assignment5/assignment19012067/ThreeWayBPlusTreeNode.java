@@ -1,4 +1,4 @@
-package org.dfpl.lecture.database.assignment19012067;
+package org.dfpl.lecture.database.assignment5.assignment19012067;
 
 import java.util.*;
 
